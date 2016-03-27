@@ -1,7 +1,7 @@
 package Sys_Configs;
 
 // ================================================================
-// Copyright (c) 2014 Bluespec, Inc. All Rights Reserved
+// Copyright (c) 2013-2016 Bluespec, Inc. All Rights Reserved
 
 // This package defines the SoC configuration, such as # of initiators
 // and targets, their address ranges, etc.

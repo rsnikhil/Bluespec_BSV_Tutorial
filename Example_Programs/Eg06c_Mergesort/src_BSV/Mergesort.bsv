@@ -186,7 +186,7 @@ module mkMergesort (Mergesort_IFC);
       for (Integer j = 0; j < valueOf (N_Mergers); j = j + 1) mergeEngines [j].reset;
    endmethod
 
-   interface config_bus_ifc = toServer (f_configReqs, f_configRsps);
+   interface config_bus_ifc = toGPServer (f_configReqs, f_configRsps);
 
    interface mem_bus_ifc = genWith (mem_ifc_of);
 endmodule: mkMergesort
@@ -362,7 +362,7 @@ module mkMergeEngine (MergeEngine_IFC);
       return (! rg_running);
    endmethod
 
-   interface mem_bus_ifc = toClient (f_memReqs, f_memRsps);
+   interface mem_bus_ifc = toGPClient (f_memReqs, f_memRsps);
 endmodule: mkMergeEngine
 
 // ================================================================

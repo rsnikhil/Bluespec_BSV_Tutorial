@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2014 Bluespec, Inc. All Rights Reserved
+// Copyright (c) 2013-2016 Bluespec, Inc. All Rights Reserved
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -291,12 +291,6 @@ uint64_t  c_read (uint64_t addr, uint64_t n_bytes)
     return result;
 }
 
-// Temporary: imported as a pure function because of bsc bug in importing as ActionValue
-uint64_t  c_read_fn (uint64_t addr, uint64_t n_bytes)
-{
-    return c_read (addr, n_bytes);
-}
-
 // ================================================================
 
 void c_write (uint64_t addr, uint64_t x, uint64_t n_bytes)
@@ -313,7 +307,7 @@ void c_write (uint64_t addr, uint64_t x, uint64_t n_bytes)
       case 4: p4 = U.xp; *p4 = x; break;
       case 8: p8 = U.xp; *p8 = x; break;
       default: fprintf (stderr,
-			"ERROR: c_read: n_bytes %0" PRId64 " should be 1, 2, 4 or 8\n",
+			"ERROR: c_write: n_bytes %0" PRId64 " should be 1, 2, 4 or 8\n",
 			n_bytes);
     }
 }

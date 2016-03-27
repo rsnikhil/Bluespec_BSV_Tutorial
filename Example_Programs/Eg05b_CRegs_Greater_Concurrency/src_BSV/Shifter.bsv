@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2014 Bluespec, Inc., All Rights Reserved
+// Copyright (c) 2013-2016 Bluespec, Inc., All Rights Reserved
 
 package Shifter;
 
@@ -9,15 +9,16 @@ package Shifter;
 // ----------------------------------------------------------------
 // From the BSV library
 
-import FIFOF  :: *;
-import GetPut :: *;
+import FIFOF        :: *;
+import GetPut       :: *;
+import ClientServer :: *;
 
 // ----------------------------------------------------------------
 // Imports for this project
 
-import Utils :: *;
+import Utils       :: *;
 import Shifter_IFC :: *;
-import MyFIFOF :: *;
+import MyFIFOF     :: *;
 
 // ----------------------------------------------------------------
 // The pipelined shifter
@@ -45,7 +46,7 @@ module mkShifter (Shifter_IFC);
       fifo_out_z.enq ((y2[2] == 0) ? x2 : (x2 << 4));
    endrule
 
-   return toServer (fifo_in_xy, fifo_out_z);
+   return toGPServer (fifo_in_xy, fifo_out_z);
 endmodule
 
 // ----------------------------------------------------------------

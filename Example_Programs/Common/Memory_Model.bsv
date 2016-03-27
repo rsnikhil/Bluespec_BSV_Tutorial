@@ -1,7 +1,7 @@
 package Memory_Model;
 
 // ================================================================
-// Copyright (c) 2013-2014 Bluespec, Inc. All Rights Reserved
+// Copyright (c) 2013-2016 Bluespec, Inc. All Rights Reserved
 
 // This package models a Memory serving read/write traffic from a bus.
 // It implements two parallel ports into memory.
@@ -36,8 +36,8 @@ interface Memory_IFC;
 
    // Debug interfaces
    method Action  initialize  (Addr base_addr, Addr n_bytes, Bool init_from_file);
-   method Data    debug_load  (Addr addr, TLMBSize sz);
-   method Action  debug_store (Addr a, Data d, TLMBSize sz);
+   method ActionValue #(Data)  debug_load  (Addr addr, TLMBSize sz);
+   method Action               debug_store (Addr a, Data d, TLMBSize sz);
 endinterface
 
 // ================================================================
@@ -115,7 +115,7 @@ module mkMemory_Model (Memory_IFC);
    // ----------------
    // INTERFACE
 
-   interface bus_ifc = zipWith (toServer, vf_reqs, vf_rsps);
+   interface bus_ifc = zipWith (toGPServer, vf_reqs, vf_rsps);
 
    method Action initialize  (Addr base_addr, Addr n_bytes, Bool init_from_file);
       Bit #(64) b64 = extend (pack (init_from_file));
@@ -127,10 +127,10 @@ module mkMemory_Model (Memory_IFC);
       rg_initialized <= True;
    endmethod
 
-   method Data debug_load  (Addr addr, TLMBSize sz) if (rg_initialized);
+   method ActionValue #(Data) debug_load  (Addr addr, TLMBSize sz) if (rg_initialized);
       let offset = addr - rg_base;
       Bit #(64) p = rg_p + extend (offset);
-      Bit #(64) x = c_read_fn (p, extend (reqSz_bytes (sz)));
+      Bit #(64) x <- c_read (p, extend (reqSz_bytes (sz)));
       return x;
    endmethod
 

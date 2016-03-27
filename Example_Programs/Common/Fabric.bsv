@@ -1,7 +1,7 @@
 package Fabric;
 
 // ================================================================
-// Copyright (c) 2013-2014 Bluespec, Inc. All Rights Reserved
+// Copyright (c) 2013-2016 Bluespec, Inc. All Rights Reserved
 
 // This package defines a fabric connecting CPUs, Memories and DMAs
 
@@ -100,8 +100,10 @@ module mkFabric (Fabric_IFC);
 
    // ----------------------------------------------------------------
    // INTERFACE
-   interface v_servers = zipWith (toServer, v_f_i_reqs, v_f_i_rsps);
-   interface v_clients = zipWith (toClient, v_f_t_reqs, v_f_t_rsps);
+
+   interface v_servers = zipWith (toGPServer, v_f_i_reqs, v_f_i_rsps);
+   interface v_clients = zipWith (toGPClient, v_f_t_reqs, v_f_t_rsps);
+
 endmodule
 
 // ================================================================

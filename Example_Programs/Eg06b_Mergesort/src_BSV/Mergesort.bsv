@@ -1,7 +1,7 @@
 package Mergesort;
 
 // ================================================================
-// Copyright (c) 2013-2014 Bluespec, Inc. All Rights Reserved.
+// Copyright (c) 2013-2016 Bluespec, Inc. All Rights Reserved.
 
 // This package defines a memory-to-memory binary merge-sort module
 // Inputs: A:    the array to sort
@@ -168,7 +168,7 @@ module mkMergesort (Mergesort_IFC);
       mergeEngine.reset;
    endmethod
 
-   interface config_bus_ifc = toServer (f_configReqs, f_configRsps);
+   interface config_bus_ifc = toGPServer (f_configReqs, f_configRsps);
 
    interface mem_bus_ifc = mergeEngine.mem_bus_ifc;
 endmodule: mkMergesort
@@ -344,7 +344,7 @@ module mkMergeEngine (MergeEngine_IFC);
       return (! rg_running);
    endmethod
 
-   interface mem_bus_ifc = toClient (f_memReqs, f_memRsps);
+   interface mem_bus_ifc = toGPClient (f_memReqs, f_memRsps);
 endmodule: mkMergeEngine
 
 // ================================================================

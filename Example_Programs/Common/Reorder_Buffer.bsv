@@ -1,7 +1,7 @@
 package Reorder_Buffer;
 
 // ================================================================
-// Copyright (c) 2013-2014 Bluespec, Inc. All Rights Reserved.
+// Copyright (c) 2013-2016 Bluespec, Inc. All Rights Reserved.
 
 // This package defines a module that can be placed between an
 // initiator and the fabric whenever targets may provide out-of-order
@@ -73,8 +73,8 @@ module mkReorder_Buffer (Reorder_Buffer_IFC);
    // ----------------
    // INTERFACE
 
-   interface server = toServer (f_reqs_in,  f_rsps_out);
-   interface client = toClient (f_reqs_out, f_rsps_in);
+   interface server = toGPServer (f_reqs_in,  f_rsps_out);
+   interface client = toGPClient (f_reqs_out, f_rsps_in);
 endmodule
 
 // ================================================================

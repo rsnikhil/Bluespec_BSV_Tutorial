@@ -1,7 +1,7 @@
 package Req_Rsp;
 
 // ================================================================
-// Copyright (c) 2013-2014 Bluespec, Inc. All Rights Reserved
+// Copyright (c) 2013-2016 Bluespec, Inc. All Rights Reserved
 
 // This package defines Requests and Responses between Initiators
 // and Targets on the interconnect fabric

@@ -1,7 +1,7 @@
 package CPU;
 
 // ================================================================
-// Copyright (c) Bluespec, Inc., 2006-2014 All Rights Reserved
+// Copyright (c) Bluespec, Inc., 2006-2016 All Rights Reserved
 
 // This package models a CPU driving read/write traffic onto a bus
 
@@ -116,7 +116,7 @@ module mkCPU_Model (CPU_IFC);
 
    // ----------------
    // INTERFACE
-   interface dcache_ifc = toClient (f_reqs, f_rsps);
+   interface dcache_ifc = toGPClient (f_reqs, f_rsps);
 
    // GDB handling
    method Action run_continue () if (fsm.done);

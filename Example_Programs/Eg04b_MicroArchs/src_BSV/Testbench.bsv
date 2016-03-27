@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2014 Bluespec, Inc.  All Rights Reserved.
+// Copyright (c) 2013-2016 Bluespec, Inc.  All Rights Reserved.
 
 package Testbench;
 
@@ -7,7 +7,7 @@ package Testbench;
 // ----------------------------------------------------------------
 // Imports from the BSV library
 
-import GetPut :: *;
+import GetPut       :: *;
 import ClientServer :: *;
 
 // Imports for this project

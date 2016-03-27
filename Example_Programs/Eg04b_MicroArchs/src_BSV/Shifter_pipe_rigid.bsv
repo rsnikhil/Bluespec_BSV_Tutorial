@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2014 Bluespec, Inc., All Rights Reserved
+// Copyright (c) 2013-2016 Bluespec, Inc., All Rights Reserved
 
 package Shifter;
 
@@ -7,9 +7,10 @@ package Shifter;
 // ----------------------------------------------------------------
 // From the BSV library
 
-import Vector :: *;
-import FIFOF  :: *;
-import GetPut :: *;
+import Vector       :: *;
+import FIFOF        :: *;
+import GetPut       :: *;
+import ClientServer :: *;
 
 // ----------------------------------------------------------------
 // Imports for this project
@@ -45,7 +46,7 @@ module mkShifter (Shifter_IFC #(n));
       fifo_out_z.enq (((vr_y[j_max-1][j_max] == 0) ? vr_x[j_max-1] : (vr_x[j_max-1] << (2**j_max))));
    endrule
 
-   return toServer (fifo_in_xy, fifo_out_z);
+   return toGPServer (fifo_in_xy, fifo_out_z);
 endmodule
 
 // ----------------------------------------------------------------

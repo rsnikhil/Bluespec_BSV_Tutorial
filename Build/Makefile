@@ -1,16 +1,34 @@
 # ================================================================
+# Copyright (c) 2016 Bluespec, Inc.  All Rights Reserved.
+# This is an example Makefile for the examples in the standard
+# Bluespec training session.
+
+# You should only have to edit the variable definitions in the
+# following section (or override them from the 'make' command line)
+
+# You should also have performed your standard Bluespec setup, defining
+# environment variables BLUESPECDIR, BLUESPEC_HOME and
+# BLUESPEC_LICENSE_FILE, and placing $BLUESPEC_HOME/bin in your path
+# so that you can invoke 'bsc', the Bluespec compiler.
+
+# ================================================================
 # Please modify the following for your installation and setup
 
 # Directory for the specific example you are building
 EG ?= Eg02a_HelloWorld
 
 # Directory containing the Bluespec Training distribution directory
-DISTRO ?= $(HOME)/BsInc/Training/Bluespec_Training_2015-08
+DISTRO ?= ..
 
 # Set this to the command that invokes your Verilog simulator
+# VSIM ?= iverilog
+VSIM ?= cvc
+# VSIM ?= cver
+# VSIM ?= vcsi
+# VSIM ?= vcs
 # VSIM ?= modelsim
-# VSIM ?= cvc
-VSIM ?= iverilog
+# VSIM ?= ncsim
+# VSIM ?= ncverilog
 
 # ================================================================
 # You should not have to change anything below this line
@@ -22,8 +40,35 @@ BSC_COMP_FLAGS = -elab -keep-fires -aggressive-conditions -no-warn-action-shadow
 BSC_LINK_FLAGS = -keep-fires
 BSC_PATHS = -p $(DISTRO)/Example_Programs/$(EG)/src_BSV:$(DISTRO)/Example_Programs/Common:%/Prelude:%/Libraries
 
-.PHONY: default
-default: compile link
+.PHONY: help
+help:
+	@echo "Current settings"
+	@echo "    BLUESPEC_LICENSE_FILE = " $(BLUESPEC_LICENSE_FILE)
+	@echo "    BLUESPEC_HOME         = " $(BLUESPEC_HOME)
+	@echo "    BLUESPECDIR           = " $(BLUESPECDIR)
+	@echo ""
+	@echo "    EG                    = " $(EG) " (redefine EG for another example)"
+	@echo ""
+	@echo "Targets for 'make':"
+	@echo "    help                Print this information"
+	@echo ""
+	@echo "    Bluesim:"
+	@echo "        compile         Compile for Bluesim"
+	@echo "        link            Link a Bluesim executable"
+	@echo "        simulate        Run the Bluesim simulation executable"
+	@echo "                            (generates VCD file; remove -V flag to suppress VCD gen)"
+	@echo "        all_bsim        Convenience for make compile link simulate"
+	@echo ""
+	@echo "    Verilog generation and Verilog sim:"
+	@echo "        verilog         Compile for Verilog (Verilog files generated in verilog_dir/)"
+	@echo "        v_link          Link a Verilog simulation executable"
+	@echo "                            (current simulator:" $(VSIM) " (redefine VSIM for other Verilog simulators)"
+	@echo "        v_simulate      Run the Verilog simulation executable"
+	@echo "        all_vsim        Convenience for make verilog v_link v_simulate"
+	@echo "                            (generates VCD file; remove +bscvcd flag to suppress VCD gen)"
+	@echo ""
+	@echo "    clean               Delete intermediate files in build_bsim/ and build_v/ dirs"
+	@echo "    full_clean          Delete all but this Makefile"
 
 # ----------------------------------------------------------------
 # Bluesim compile/link/simulate
@@ -53,7 +98,6 @@ link:
 .PHONY: simulate
 simulate:
 	@echo Bluesim simulation ...
-	ln -s -f  $(DISTRO)/Example_Programs/$(EG)/objdump  objdump
 	./$(BSIM_EXE)  -V
 	@echo Bluesim simulation finished
 
@@ -94,9 +138,9 @@ v_simulate:
 
 .PHONY: clean
 clean:
-	rm -f  build_bsim/*  build_v/*
+	rm -f  build_bsim/*  build_v/*    *~
 
 .PHONY: full_clean
 full_clean:
-	rm -r -f  build_bsim  build_v  verilog_dir
-	rm -f  $(BSIM_EXE)  $(BSIM_EXE).so  $(VSIM_EXE)  *.vcd  objdump
+	rm -r -f  build_bsim  build_v  verilog_dir  *~
+	rm -f  *$(TOPMODULE)*  *.vcd

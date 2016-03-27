@@ -1,7 +1,7 @@
 package Testbench;
 
 // ================================================================
-// Copyright (c) 2014 Bluespec, Inc. All Rights Reserved.
+// Copyright (c) 2013-2016 Bluespec, Inc. All Rights Reserved.
 
 // This package defines the overall system.
 // Instantiates initiators, targets and fabric, and connects them.
@@ -88,6 +88,7 @@ module mkTestbench (Empty) ;
    Bit #(64) console_arg_8    = rg_console_command [9];
 
    Reg #(Bit #(64)) rg_addr <- mkRegU;
+   Reg #(Bit #(64)) rg_data <- mkRegU;
 
    // Start address and length of vector to be sorted; address of scratch working area
    Addr sort_start_addr   = 'h1000;
@@ -97,10 +98,13 @@ module mkTestbench (Empty) ;
    Stmt dump_mem_range =
    seq
       $display ("%0d: dumping memory region", cur_cycle);
-      for (rg_addr <= sort_start_addr; rg_addr < sort_start_addr + (n_words << 2); rg_addr <= rg_addr + 4) action
-	 let d = mem.debug_load (rg_addr, BITS32);
-	 $display ("%016h: %8h", rg_addr, d);
-      endaction
+      for (rg_addr <= sort_start_addr; rg_addr < sort_start_addr + (n_words << 2); rg_addr <= rg_addr + 4) seq
+	 action
+	    let d <- mem.debug_load (rg_addr, BITS32);
+            rg_data <= d;
+	 endaction
+	 $display ("%016h: %8h", rg_addr, rg_data);
+      endseq
    endseq;
 
    mkAutoFSM (
@@ -123,8 +127,12 @@ module mkTestbench (Empty) ;
 	    endaction
 
 	    if (console_command == cmd_continue) seq
+	       // GDB 'continue' action: ('run' the CPU program)
 	       cpu.run_continue;
+	       // GDB waits for CPU to stop, and retrieves the 'stop reason'
 	       display_stop_reason ("Stop: reason: ", cpu.stop_reason, "\n");
+
+	       // Show final state of memory
 	       dump_mem_range;
 	    endseq
 
